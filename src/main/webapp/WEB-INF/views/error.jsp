@@ -11,7 +11,7 @@
          alt="error">
     <h1 class="display-3 mt-2">Something went wrong...</h1>
     <p class="display-6 mb-5 text-muted">${status}: ${error}</p>
-    <a class="btn btn-light" href="/welcome">Home Page</a>
+    <a class="btn btn-light" href="${pageContext.request.contextPath}/welcome">Home Page</a>
 </div>
 </body>
 </html>

@@ -14,7 +14,7 @@ public class UserServiceImpl implements UserService {
             Map.of(1, new UserDto("Tim", "admin", "admin"),
             2, new UserDto("Romeo", "user", "user"),
             3, new UserDto("Gerald", "editor", "editor"),
-            4, new UserDto("Admin", "Adminchenko", "weddingdate"),
+            4, new UserDto("Ahmed", "tutor", "tutor"),
             5, new UserDto("Alex", "localhost", "8080")));
 
     @Override
