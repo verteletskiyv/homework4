@@ -13,6 +13,7 @@ import javax.servlet.http.HttpSession;
 @Controller
 public class UserController {
     private final UserServiceImpl service;
+
     public UserController(UserServiceImpl service) {
         this.service = service;
     }
@@ -30,28 +31,22 @@ public class UserController {
     @PostMapping("/login")
     public String welcome(Model model, HttpSession session,
                           @RequestParam String login, @RequestParam String password) {
-        if (service.findByLogin(login).isEmpty()) {
-            model.addAttribute("errorMsg", "Incorrect login or password");
-            return "login";
+        if (service.findByLogin(login).isPresent()) {
+            UserDto user = service.findByLogin(login).get();
+            if (login.equals(user.getLogin()) && password.equals(user.getPassword())) {
+                session.setAttribute("user", user);
+                session.setMaxInactiveInterval(10 * 60);
+                return "redirect:/welcome";
+            }
         }
-
-        UserDto user = service.findByLogin(login).get();
-        if (!login.equals(user.getLogin()) || !password.equals(user.getPassword())) {
-            model.addAttribute("errorMsg", "Incorrect login or password");
-            return "login";
-        } else {
-            session.setAttribute("user", user);
-            session.setMaxInactiveInterval(10 * 60);
-        }
-
-        return "redirect:/welcome";
+        model.addAttribute("errorMsg", "Incorrect login or password");
+        return "login";
     }
 
     @GetMapping("/welcome")
     public String welcomeUser(HttpSession session) {
         if (session.getAttribute("user") == null)
             return "redirect:/login";
-
         session.getAttribute("user");
         return "welcome";
     }
@@ -60,7 +55,6 @@ public class UserController {
     public String users(HttpSession session, Model model) {
         if (session.getAttribute("user") == null)
             return "redirect:/login";
-
         model.addAttribute("usersList", service.findUsers());
         return "users";
     }

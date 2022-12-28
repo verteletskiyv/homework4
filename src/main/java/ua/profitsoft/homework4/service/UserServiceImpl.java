@@ -2,29 +2,25 @@ package ua.profitsoft.homework4.service;
 
 import ua.profitsoft.homework4.dto.UserDto;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
-import java.util.concurrent.ConcurrentHashMap;
 
 @Service
 public class UserServiceImpl implements UserService {
-    Map<Integer, UserDto> users = new ConcurrentHashMap<>(
-            Map.of(1, new UserDto("Tim", "admin", "admin"),
-            2, new UserDto("Romeo", "user", "user"),
-            3, new UserDto("Gerald", "editor", "editor"),
-            4, new UserDto("Ahmed", "tutor", "tutor"),
-            5, new UserDto("Alex", "localhost", "8080")));
+    List<UserDto> users = List.of(new UserDto("Tim", "admin", "admin"),
+                                 new UserDto("Romeo", "user", "user"),
+                                 new UserDto("Gerald", "editor", "editor"),
+                                 new UserDto("Ahmed", "tutor", "tutor"),
+                                 new UserDto("Alex", "localhost", "8080"));
 
     @Override
     public List<UserDto> findUsers() {
-        return users.values().stream().toList();
+        return users;
     }
 
     @Override
     public Optional<UserDto> findByLogin(String login) {
-        return users.values().stream()
+        return users.stream()
                 .filter(user -> login.equals(user.getLogin()))
                 .findFirst();
     }
